@@ -22,12 +22,21 @@ describe('Game3', function () {
     const { game, signer } = await loadFixture(deployContractAndSetVariables);
 
     // you'll need to update the `balances` mapping to win this stage
+     game.buy();
+     game.balances[signer] = 1;
+  //mapping(address => uint) balances;
+      game. balances[ signer.getAddress()]= 2;
+      game. balances[ signer.getAddress()] = 3;
+
 
     // to call a contract as a signer you can use contract.connect
     await game.connect(signer).buy({ value: '1' });
 
     // TODO: win expects three arguments
-    await game.win();
+    await game.win(   ethers.provider.getSigner(0).getAddress()
+,   ethers.provider.getSigner(1).getAddress()
+,   ethers.provider.getSigner(2).getAddress()
+);
 
     // leave this assertion as-is
     assert(await game.isWon(), 'You did not win the game');
